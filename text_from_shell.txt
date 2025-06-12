@@ -1,0 +1,65 @@
+User.objects.create(username = 'Смирнов Александр Сергеевич')
+User.objects.create(username = 'Бородин Александр Андреевич')
+
+Author.objects.create(user = User.objects.get(username = 'Смирнов Александр Сергеевич'))
+Author.objects.create(user = User.objects.get(username = 'Бородин Александр Андреевич'))
+
+Category.objects.create(name = 'Спорт')
+Category.objects.create(name = 'Политика')
+Category.objects.create(name = 'Образование')
+Category.objects.create(name = 'Автомобили')
+
+Post.objects.create(author = Author.objects.get(pk=1), type = 'AR', title = 'Статья №1', content = 'Текст статьи №1 написанной автором Смирновым Александром Сергеевичем')
+Post.objects.create(author = Author.objects.get(pk=1), type = 'NW', title = 'Новость №1', content = 'Текст новости №1 написанной автором Смирновым Александром Сергеевичем')
+Post.objects.create(author = Author.objects.get(pk=2), type = 'AR', title = 'Статья №2', content = 'Текст статьи №2 написанной автором Бородиным Александром Андреевичем')
+
+pt_1 = Post.objects.get(pk=1)
+pt_1.category.add(Category.objects.get(name = 'Спорт'))
+pt_1.category.add(Category.objects.get(name = 'Автомобили'))
+pt_2 = Post.objects.get(pk=2)
+pt_2.category.add(Category.objects.get(name = 'Политика'))
+pt_3 = Post.objects.get(pk=3)
+pt_3.category.add(Category.objects.get(name = 'Политика'))
+pt_3.category.add(Category.objects.get(name = 'Образование'))
+
+Comment.objects.create(post = pt_1, author = User.objects.get(pk=2), content = 'Комментарий Бородина А.А к статье №1')
+Comment.objects.create(post = pt_2, author = User.objects.get(pk=2), content = 'Комментарий Бородина А.А к новости №1')
+Comment.objects.create(post = pt_3, author = User.objects.get(pk=1), content = 'Первый комментарий Смирнова А.С к статье №2')
+Comment.objects.create(post = pt_3, author = User.objects.get(pk=1), content = 'Второй комментарий Смирнова А.С к статье №2')
+
+pt_1.like()
+pt_1.like()
+pt_1.like()
+pt_1.like()
+pt_1.dislike()
+pt_2.like()
+pt_3.like()
+pt_3.like()
+pt_3.like()
+
+cm_1 = Comment.objects.get(pk=1)
+cm_2 = Comment.objects.get(pk=2)
+cm_3 = Comment.objects.get(pk=3)
+cm_4 = Comment.objects.get(pk=4)
+
+cm_1.like()
+cm_1.like()
+cm_1.like()
+cm_2.like()
+cm_3.like()
+cm_3.dislike()
+cm_4.like()
+
+Ath = Author.objects.all()
+Ath[0].update_rating()
+Ath[1].update_rating()
+
+Ath.order_by('-rating').values('user__username', 'rating').first()
+
+first_post = Post.objects.all().order_by('-rating')[0]
+first_post.author.user.username
+first_post.rating
+first_post.title
+first_post.preview()
+
+Comment.objects.filter(post = first_post).values('created_at', 'author__username', 'rating', 'content')
