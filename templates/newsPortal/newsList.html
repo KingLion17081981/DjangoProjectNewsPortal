@@ -1,4 +1,5 @@
 {% extends 'flatpages/default.html' %}
+{% load customs_fiter %}
 
 {% block title %}
 Новости (статьи)
@@ -19,9 +20,10 @@
 
             {% for post in posts %}
                 <tr>
-                    <td>{{ post.title }}</td>
+                    <td>{{ post.title|my_fiter:"Статья" }}</td>
                     <td>{{ post.created_at|date:'d M Y' }}</td>
-                    <td>{{ post.content|truncatewords:20 }}</td>
+                    <td>
+                        {{ post.content|truncatewords:20|my_fiter:"Статьи" }}</td>
                 </tr>
             {% endfor %}
         </table>
