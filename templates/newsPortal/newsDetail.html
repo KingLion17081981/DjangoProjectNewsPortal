@@ -1,15 +1,16 @@
 {% extends 'flatpages/default.html' %}
+{% load customs_fiter %}
 
 {% block title %}
-{{ post.title }}
+{{ post.title|my_fiter:'Статья' }}
 {% endblock title %}
 
 {% block content %}
 <h1>Новость (статья)</h1>
 <hr>
     <p>
-    Заголовок: {{ post.title }}
+    Заголовок: {{ post.title|my_fiter:'Статья' }}
     <br>Дата публикации: {{ post.created_at|date:'d M Y' }}
-    <br>Содержание: {{ post.content }}
+    <br>Содержание: {{ post.content|my_fiter:'Статьи' }}
     </p>
 {% endblock content %}
