@@ -23,7 +23,7 @@
                     <td>{{ post.title|censor:"Статья" }}</td>
                     <td>{{ post.created_at|date:'d M Y' }}</td>
                     <td>
-                        {{ post.content|truncatewords:20|censor:"Статьи" }}</td>
+                        {{ post.content|truncatechars:20|censor:"Статьи" }}</td>
                 </tr>
             {% endfor %}
         </table>
