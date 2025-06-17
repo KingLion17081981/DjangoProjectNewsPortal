@@ -3,7 +3,7 @@ from django import template
 register = template.Library()
 
 @register.filter()
-def my_fiter(value, filter_word = ''):
+def censor(value, filter_word = ''):
     if type(value) == str:
         list_words = value.split()
         res_str = ''

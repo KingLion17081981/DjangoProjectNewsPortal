@@ -2,15 +2,15 @@
 {% load customs_fiter %}
 
 {% block title %}
-{{ post.title|my_fiter:'Статья' }}
+{{ post.title|censor:'Статья' }}
 {% endblock title %}
 
 {% block content %}
 <h1>Новость (статья)</h1>
 <hr>
     <p>
-    Заголовок: {{ post.title|my_fiter:'Статья' }}
+    Заголовок: {{ post.title|censor:'Статья' }}
     <br>Дата публикации: {{ post.created_at|date:'d M Y' }}
-    <br>Содержание: {{ post.content|my_fiter:'Статьи' }}
+    <br>Содержание: {{ post.content|censor:'Статьи' }}
     </p>
 {% endblock content %}
