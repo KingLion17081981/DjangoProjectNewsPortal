@@ -4,6 +4,7 @@ from django.views.generic import (ListView, DetailView, CreateView,
 from .models import Post
 from .forms import PostForm
 from .fiters import PostFilter
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 # Create your views here.
 class PostListView(ListView):
@@ -28,7 +29,9 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
     template_name = 'newsPortal/newsDetail.html'
 
-class NewsCreateView(CreateView):
+class NewsCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = ('NewsPortal.add_post',)
+
     model = Post
     form_class = PostForm
     template_name = 'newsPortal/newsCreate.html'
@@ -38,7 +41,9 @@ class NewsCreateView(CreateView):
         post_form.type = "NW"
         return super().form_valid(form)
 
-class ArticlesCreateView(CreateView):
+class ArticlesCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = ('NewsPortal.add_post',)
+
     model = Post
     form_class = PostForm
     template_name = 'newsPortal/articlesCreate.html'
@@ -58,12 +63,16 @@ class ArticlesDeleteView(DeleteView):
     template_name = 'newsPortal/articlesDelete.html'
     success_url = reverse_lazy('post_list')
 
-class NewsUpdateView(UpdateView):
+class NewsUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = ('NewsPortal.change_post',)
+
     model = Post
     form_class = PostForm
     template_name = 'newsPortal/newsCreate.html'
 
-class ArticlesUpdateView(UpdateView):
+class ArticlesUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = ('NewsPortal.change_post',)
+
     model = Post
     form_class = PostForm
     template_name = 'newsPortal/articlesCreate.html'
