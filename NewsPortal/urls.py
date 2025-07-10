@@ -1,7 +1,10 @@
 from django.urls import path
 from .views import (PostListView, PostDetailView, NewsCreateView,
                     ArticlesCreateView, NewsDeleteView, ArticlesDeleteView,
-                    NewsUpdateView, ArticlesUpdateView)
+                    NewsUpdateView, ArticlesUpdateView, category_list,
+                    category_detail, subscribe_to_category, category_create)
+
+app_name = 'NewsPortal'
 
 urlpatterns = [
     path('', PostListView.as_view(), name='post_list'),
@@ -17,4 +20,9 @@ urlpatterns = [
          name='news_update'),
     path('articles/<int:pk>/update/', ArticlesUpdateView.as_view(),
          name='articles_update'),
+    path('categories/', category_list, name='category_list'),
+    path('categories/<int:pk>/', category_detail, name='category_detail'),
+    path('categories/subscribe/<int:pk>/', subscribe_to_category,
+         name='category_subscribe'),
+    path('categories/create/', category_create, name='category_create'),
 ]

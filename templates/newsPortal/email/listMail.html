@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.title }}</title>
+</head>
+<body>
+    <h2>Уважаемый, {{ user.username }}</h2>
+    <h3>В категориях на которые вы подписаны вышла новая статья</h3>
+    <hr>
+    <p>
+        {{ post.title }}
+    </p>
+    <p>
+        {{ post.content|truncatechars:30 }}
+    </p>
+    <a href="{{ url }}">{{ post.title }}</a>
+</body>
+</html>

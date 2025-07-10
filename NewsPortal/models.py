@@ -13,6 +13,7 @@ TYPE_OF_PUBLICATION = [
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    subscribers = models.ManyToManyField(User, through='UsersCategory')
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -42,7 +43,6 @@ class Author(models.Model):
                        + sum_comments_post_autor)
         self.save()
 
-
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     type = models.CharField(max_length=2, choices=TYPE_OF_PUBLICATION)
@@ -67,8 +67,7 @@ class Post(models.Model):
         return f'{self.content[:124]} ...'
 
     def get_absolute_url(self):
-        return reverse('post_detail', args=[str(self.id)])
-
+        return reverse('NewsPortal:post_detail', args=[str(self.id)])
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -92,5 +91,7 @@ class Comment(models.Model):
             self.rating = 0
         self.save()
 
-
+class UsersCategory(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 

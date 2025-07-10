@@ -1,0 +1,18 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+    {{ category.name }}
+{% endblock title %}
+
+{% block content %}
+{% if signed %}
+    <p>Вы подписаны на категорию: {{ category.name }}</p>
+{% else %}
+    {% if is_save %}
+        <p>Пользователь: {{ user.username }} уже подписан на эту категорию</p>
+    {% else %}
+        <p>Не удалось подписаться. Пользователь не авторизирован</p>
+    {% endif %}
+{% endif %}
+<a href="{% url 'NewsPortal:category_list' %}">Список категорий</a>
+{% endblock content %}

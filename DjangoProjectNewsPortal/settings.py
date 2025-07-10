@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,14 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
-    'NewsPortal',
+    'NewsPortal.apps.NewsportalConfig',
     'django_filters',
     'protect.apps.ProtectConfig',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
-    'sign.apps.SignConfig'
+    'sign.apps.SignConfig',
+    'django_apscheduler'
 ]
 
 SITE_ID = 1
@@ -150,8 +152,22 @@ STATICFILES_DIRS = [
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+#ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+DEFAULT_FROM_EMAIL = 'Smirnoff17081981@yandex.ru'
 
 ACCOUNT_FORMS = {'signup': 'sign.forms.BasicSignupForm'}
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+
+EMAIL_HOST_USER = 'Smirnoff17081981'
+EMAIL_HOST_PASSWORD = 'atjpgwigzhfbajxr'
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
+
+

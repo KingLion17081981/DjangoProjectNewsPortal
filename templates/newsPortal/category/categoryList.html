@@ -1,0 +1,25 @@
+{% extends 'flatpages/default.html' %}
+{% load customs_fiter %}
+{% load customs_tags %}
+
+{% block title %}
+Категории
+{% endblock title %}
+
+{% block content %}
+<h1>Все категории</h1>
+<hr>
+    {% if categories %}
+        {% for category in categories %}
+            <p>
+            <a href="{% url 'NewsPortal:category_detail' category.id %}">
+                {{ category.name }}</a>
+            </p>
+        {% endfor %}
+    {% else  %}
+        <h2>Список категорий пуст</h2>
+    {% endif %}
+<hr>
+    <a href="{% url 'NewsPortal:category_create' %}">Создать категорию</a>
+
+{% endblock content %}

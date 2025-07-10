@@ -1,12 +1,14 @@
 from django.urls import reverse_lazy
 from django.views.generic import (ListView, DetailView, CreateView,
                                   DeleteView, UpdateView)
-from .models import Post
-from .forms import PostForm
+from django.shortcuts import render, redirect
+from .models import Post, Category, UsersCategory
+from .forms import PostForm, CategoryForm
 from .fiters import PostFilter
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 # Create your views here.
+
 class PostListView(ListView):
     model = Post
     context_object_name = 'posts'
@@ -76,6 +78,58 @@ class ArticlesUpdateView(PermissionRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'newsPortal/articlesCreate.html'
+
+def category_list(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    return render(request, 'newsPortal/category/categoryList.html'
+                  , context)
+
+def category_detail(request, pk):
+    category = Category.objects.get(pk=pk)
+    context = {'category': category}
+    return render(request, 'newsPortal/category/categoryDetail.html'
+                  , context)
+
+def subscribe_to_category(request, pk):
+    signed = False
+    category = None
+    user = None
+    is_save = False
+
+    if request.user.is_authenticated:
+        category = Category.objects.get(pk=pk)
+        user = request.user
+
+        if not UsersCategory.objects.filter(category=category, user=user).exists():
+            UsersCategory.objects.create(user=user, category=category)
+            signed = True
+        else:
+            is_save = True
+
+    context = {'category': category, 'signed': signed, 'user': user, 'is_save': is_save}
+    return render(request, 'newsPortal/category/categorySubscribe.html'
+                  , context)
+
+def category_create(request):
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('NewsPortal:category_list')
+
+    elif request.method == 'GET':
+        form = CategoryForm()
+        context = {'form': form}
+        return render(request, 'newsPortal/category/categoryCreate.html'
+                      , context=context)
+
+
+
+
+
+
+
 
 
 
