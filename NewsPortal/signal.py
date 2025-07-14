@@ -6,9 +6,13 @@ from .models import UsersCategory, PostCategory
 from django.dispatch import receiver
 from django.core.mail import EmailMultiAlternatives
 
+from .tasks import send_massage_new_post
+
 @receiver(m2m_changed, sender=PostCategory)
 def create_category(sender, instance, action, *args, **kwargs):
     if action == 'post_add':
+        send_massage_new_post.delay(instance.id)
+        '''
         categories_qs = PostCategory.objects.filter(post=instance)
 
         categories_list = []
@@ -39,6 +43,7 @@ def create_category(sender, instance, action, *args, **kwargs):
                     to=[user.email])
                 msg.attach_alternative(html_content, 'text/html')
                 msg.send()
+        '''
 
 
 
